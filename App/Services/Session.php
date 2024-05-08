@@ -4,19 +4,16 @@ require realpath(__DIR__ . '/Interfaces/CustomSessionHandler.php');
 
 class Session implements CustomSessionHandler {
 
-  public function __construct() {
+  public static function open() {
     session_start();
   }
 
-  public static function open() {
-    return true;
-  }
-
   public static function close() {
-    return true;
+    session_destroy();
   }
 
-  public static function create() {
+  public static function write() {
+    self::open();
     $sessionId = session_create_id();
     $sessionData = 1;
 
@@ -33,7 +30,7 @@ class Session implements CustomSessionHandler {
   }
 
   public static function read(){
-    $session= new Session();
+    self::open();
     $sessionId = $_SESSION['data'][0];
     $sessionData = $_SESSION['data'][1];
 
@@ -48,19 +45,18 @@ class Session implements CustomSessionHandler {
     date_default_timezone_set('Asia/Jakarta');
     $currentTime = date('Y-m-d H:i:s');
 
-    if ($expiredSession['expired_at'] == $currentTime ||$expiredSession['expired_at'] < $currentTime) {
+    if ($expiredSession['expired_at'] == $currentTime) {
       self::destroy($sessionId);
-      self::clear();
+    }
+
+    if ($currentTime) {
+      self::clear($currentTime);
     }
 
     if (!$result->num_rows > 0) {
       header('Location: /login');
     }
     $db->close();
-  }
-
-  public static function write($sessionId, $sessionData){
-
   }
 
   public static function destroy($sessionId){
@@ -72,10 +68,16 @@ class Session implements CustomSessionHandler {
     $result = $statement->get_result();
 
     $db->close();
+    Self::close();
   }
 
-  public static function clear($expiredSession){
+  public static function clear($currentTime){
+    $db = new mysqli('localhost', 'root', '', 'db_latihan_oop_php');
+    $query = "DELETE FROM sessions WHERE expired_at < ?";
+    $statement = $db->prepare($query);
+    $statement->bind_param('s', $currentTime);
+    $statement->execute();
 
+    $db->close();
   }
-
 }

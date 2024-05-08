@@ -24,8 +24,7 @@ class LoginController extends Controller {
     $authenticated = AuthenticationService::authenticate($this->model, $username, $password);
 
     if ($authenticated) {
-      $session = Session::create();
-      session_start();
+      $session = Session::write();
       $_SESSION['data'] = $session;
       header('Location: /users');
     } else {
