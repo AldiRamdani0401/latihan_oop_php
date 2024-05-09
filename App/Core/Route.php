@@ -44,7 +44,7 @@ class Route {
         echo "Action '$action' Not Found";
       }
     } else {
-      echo "Controllerr '$controllerName' Not Found";
+      echo "Controller '$controllerName' Not Found";
     }
   }
 }

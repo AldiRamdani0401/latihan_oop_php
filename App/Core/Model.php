@@ -1,6 +1,6 @@
 <?php
 
-include 'Schema.php';
+require 'Schema.php';
 
 class Model extends Schema {
 

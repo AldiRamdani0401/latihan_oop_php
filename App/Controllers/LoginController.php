@@ -3,30 +3,31 @@
 require realpath(__DIR__ . '/../Core/Controller.php');
 require realpath(__DIR__ . '/../Services/AuthenticationService.php');
 require realpath(__DIR__ . '/../Services/Session.php');
+require realpath(__DIR__ . '/../Models/UserModel.php');
+require realpath(__DIR__ . '/../Entity/User.php');
 
 class LoginController extends Controller {
-
-  protected $model = 'tb_users';
 
   public function index() {
     $this->view->render('login');
   }
 
   public function login() {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    $model = new UserModel();
+    $user = new User($_POST['username'], $_POST['password']);
+    $username = $user->getUsername();
+    $password = $user->getPassword();
 
     if (empty($username) || empty($password)) {
       echo "Username & Password cannot be empty";
       return;
     }
 
-    $authenticated = AuthenticationService::authenticate($this->model, $username, $password);
+    $authenticated = AuthenticationService::authenticate($model->getTable(), $username, $password);
 
     if ($authenticated) {
       $session = Session::write();
-      $_SESSION['data'] = $session;
-      header('Location: /users');
+      header("Location: /$authenticated");
     } else {
       header('Location: /login', $message = 'error');
     }

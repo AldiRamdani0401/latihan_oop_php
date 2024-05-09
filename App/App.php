@@ -30,7 +30,6 @@ class App {
     // Admins Route
     $route->get('/admins', 'AdminController@index');
 
-
     // Users Route
     $route->get('/users', 'UserController@show');
 

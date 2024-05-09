@@ -419,7 +419,7 @@
                 <p>+1 5589 55488 55s</p>
               </div>
 
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126915.75519988054!2d106.87069009726564!3d-6.248263800000004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e699b059bb8deb9%3A0x86980df629d49c93!2sKampus%20STTI%20Sony%20Sugema!5e0!3m2!1sid!2sid!4v1715024867283!5m2!1sid!2sid" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.584181554039!2d107.37661687468388!3d-6.318222793671172!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69772a3359107b%3A0x1f10a6889825470!2sSMK%20TEKNOLOGI%20KARAWANG!5e0!3m2!1sid!2sid!4v1715232408360!5m2!1sid!2sid" frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
             </div>
 
           </div>

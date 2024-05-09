@@ -1,12 +1,12 @@
 <?php
 
-include 'Database.php';
+require_once 'Database.php';
 
 class Schema extends Database {
   protected static $table;
 
-  public function __construct() {
-    return self::setTable();
+  public function __construct($table) {
+    return self::setTable($table);
   }
 
   public static function setTable(String $table) {

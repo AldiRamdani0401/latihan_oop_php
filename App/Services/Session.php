@@ -49,7 +49,7 @@ class Session implements CustomSessionHandler {
       self::destroy($sessionId);
     }
 
-    if ($currentTime) {
+    if ($expiredSession['expired_at'] < $currentTime) {
       self::clear($currentTime);
     }
 

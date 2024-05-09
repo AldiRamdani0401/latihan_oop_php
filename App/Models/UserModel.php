@@ -1,13 +1,15 @@
 <?php
 
-include '../Core/Model.php';
+require realpath(__DIR__ . '/../Core/Model.php');
 
 class UserModel extends Model {
-  protected $id = "id";
-  protected $username = "username";
-  protected $password = "password";
+  protected static $table = 'tb_users';
 
-  public function __construct($table) {
-    parent::setTable($table);
+  public function __construct() {
+    parent::__construct(self::$table);
+  }
+
+  public function getTable() {
+    return self::$table;
   }
 }
