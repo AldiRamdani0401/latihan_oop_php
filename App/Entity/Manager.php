@@ -8,7 +8,7 @@ class Manager {
   private $stats;
 
   public function __construct(User $user) {
-    if ($user->getUserLevel() == 1) {
+    if ($user->getUserLevel() == 'manager') {
       $this->userId = $user->getUserId();
       $this->userLevel = $user->getUserLevel();
       $this->username = $user->getUsername();
@@ -20,5 +20,9 @@ class Manager {
 
   public function getStats() {
     return $this->stats;
+  }
+
+  public function getUserLevel () {
+    return $this->userLevel;
   }
 }

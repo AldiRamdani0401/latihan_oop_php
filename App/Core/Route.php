@@ -1,31 +1,46 @@
 <?php
-// include 'Autoloading.php';
+
+require_once realpath(__DIR__ . '/../Services/Session.php');
+Session::open();
+
+include realpath(__DIR__ . '/../Services/AuthMiddleware.php');
 
 class Route {
   protected $routes = [];
 
-  public function get($route, $controller) {
-    $this->routes[$route] = $controller;
+  public function get($route, $controller, $middleware = null) {
+    $this->addRoute('GET', $route, $controller, $middleware);
   }
 
-  public function post($route, $controller) {
-    $this->routes[$route] = $controller;
+  public function post($route, $controller, $middleware = null) {
+      $this->addRoute('POST', $route, $controller, $middleware);
   }
 
-  public function patch($route, $controller) {
-    $this->routes[$route] = $controller;
-  }
-
-  public function delete($route, $controller) {
-    $this->routes[$route] = $controller;
+  protected function addRoute($method, $route, $controller, $middleware = null) {
+      $this->routes[$method][$route] = [
+          'controller' => $controller,
+          'middleware' => $middleware
+      ];
   }
 
   public function dispatch($url) {
-    if (array_key_exists($url, $this->routes)) {
-      $controller = $this->routes[$url];
-      $this->callController($controller);
+    $method = $_SERVER['REQUEST_METHOD'];
+    if (array_key_exists($url, $this->routes[$method])) {
+        $route = $this->routes[$method][$url];
+        if (isset($route['middleware'])) {
+            $middlewareParts = explode('@', $route['middleware']);
+            $middlewareClass = $middlewareParts[0];
+            $middlewareMethod = $middlewareParts[1];
+            $middlewareInstance = new $middlewareClass();
+            $result = $middlewareInstance->$middlewareMethod();
+            if (!$result) {
+                echo 'Anda tidak memiliki izin untuk mengakses halaman ini';
+                return;
+            }
+        }
+        $this->callController($route['controller']);
     } else {
-      echo "404 Not Found";
+        echo "404 Not Found";
     }
   }
 

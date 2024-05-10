@@ -2,7 +2,6 @@
 
 require realpath(__DIR__ . '/../Core/Controller.php');
 require realpath(__DIR__ . '/../Services/AuthenticationService.php');
-require realpath(__DIR__ . '/../Services/Session.php');
 require realpath(__DIR__ . '/../Models/UserModel.php');
 require realpath(__DIR__ . '/../Entity/User.php');
 
@@ -18,6 +17,7 @@ class LoginController extends Controller {
     $username = $user->getUsername();
     $password = $user->getPassword();
 
+
     if (empty($username) || empty($password)) {
       echo "Username & Password cannot be empty";
       return;
@@ -26,7 +26,6 @@ class LoginController extends Controller {
     $authenticated = AuthenticationService::authenticate($model->getTable(), $username, $password);
 
     if ($authenticated) {
-      $session = Session::write();
       header("Location: /$authenticated");
     } else {
       header('Location: /login', $message = 'error');

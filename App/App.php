@@ -1,6 +1,6 @@
 <?php
 
-include 'Core/Route.php';
+require 'Core/Route.php';
 
 class App {
   protected $router;
@@ -22,18 +22,16 @@ class App {
     $route->post('/register/verification/', 'RegisterController@verifyCode');
 
     // Managers Route
-    $route->get('/managers', 'ManagerController@index');
+    $route->get('/managers', 'ManagerController@index', 'AuthMiddleware@manager');
 
     // Organization Route
     $route->get('/managers/organization', 'OrganizationController@index');
 
     // Admins Route
-    $route->get('/admins', 'AdminController@index');
+    $route->get('/admins', 'AdminController@index', 'AuthMiddleware@admin');
 
     // Users Route
-    $route->get('/users', 'UserController@show');
-
-
+    $route->get('/users', 'UserController@show', 'AuthMiddleware@user');
 
     return $route;
   }

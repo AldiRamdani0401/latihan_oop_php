@@ -8,7 +8,6 @@ class Model extends Schema {
   public static function insert(Array $datas) {
     $columns = implode(',', array_keys($datas));
     $values = "'" . implode("','", array_values($datas)) . "'";
-
     // Check Existing Record
     $checkQuery = "SELECT * FROM " . self::$table . " WHERE " ;
     $columnAndValueArray = array_map(function($column) use ($datas) {
@@ -16,7 +15,6 @@ class Model extends Schema {
     }, array_keys($datas));
     $checkQuery .= implode (' AND ', $columnAndValueArray);
     $checkResult = mysqli_query(parent::getConnection(), $checkQuery);
-
     if ($checkResult && mysqli_num_rows($checkResult) > 0) {
       echo 'Data sudah ada!';
     } else {

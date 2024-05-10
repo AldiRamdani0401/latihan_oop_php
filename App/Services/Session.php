@@ -12,10 +12,9 @@ class Session implements CustomSessionHandler {
     session_destroy();
   }
 
-  public static function write() {
-    self::open();
+  public static function write($level) {
     $sessionId = session_create_id();
-    $sessionData = 1;
+    $permission = "inAccess,$level";
 
     date_default_timezone_set('Asia/Jakarta');
     $expireTime = date('Y-m-d H:i:s', strtotime('+6 hour'));
@@ -23,21 +22,19 @@ class Session implements CustomSessionHandler {
     $db = new mysqli('localhost', 'root', '', 'db_latihan_oop_php');
     $query = "INSERT INTO sessions (id, data, expired_at) VALUES (?, ?, ?)";
     $statement = $db->prepare($query);
-    $statement->bind_param('sss', $sessionId, $sessionData, $expireTime);
+    $statement->bind_param('sss', $sessionId, $permission, $expireTime);
     $statement->execute();
     $db->close();
-    return [$sessionId, $sessionData];
+    $_SESSION['data'] = [$sessionId, $permission];
   }
 
   public static function read(){
     self::open();
     $sessionId = $_SESSION['data'][0];
-    $sessionData = $_SESSION['data'][1];
-
     $db = new mysqli('localhost', 'root', '', 'db_latihan_oop_php');
-    $query = "SELECT * FROM sessions WHERE id = ? AND data = ?";
+    $query = "SELECT * FROM sessions WHERE id = ?";
     $statement = $db->prepare($query);
-    $statement->bind_param('ss', $sessionId, $sessionData);
+    $statement->bind_param('s', $sessionId);
     $statement->execute();
     $result = $statement->get_result();
     $expiredSession = mysqli_fetch_assoc($result);
