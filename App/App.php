@@ -21,17 +21,23 @@ class App {
     $route->get('/register/verification', 'RegisterController@send');
     $route->post('/register/verification/', 'RegisterController@verifyCode');
 
-    // Managers Route
-    $route->get('/managers', 'ManagerController@index', 'AuthMiddleware@manager');
+    // Manager Route
+    $route->get('/manager', 'ManagerController@index', 'AuthMiddleware@manager');
 
-    // Organization Route
-    $route->get('/managers/organization', 'OrganizationController@index');
+    // Manager Organization Route
+    $route->get('/manager/organization', 'OrganizationController@index', 'AuthMiddleware@manager');
+    $route->get('/manager/organization/create', 'OrganizationController@createOrganizationForm', 'AuthMiddleware@manager');
+    $route->post('/manager/organization/create/', 'OrganizationController@create', 'AuthMiddleware@manager');
 
-    // Admins Route
-    $route->get('/admins', 'AdminController@index', 'AuthMiddleware@admin');
+    // Manager Exam Route
+    $route->get('/manager/organization/exam/create', 'ExamController@createExamForm', 'AuthMiddleware@manager');
+    $route->post('/manager/organization/exam/create/', 'ExamController@createExam', 'AuthMiddleware@manager');
 
-    // Users Route
-    $route->get('/users', 'UserController@show', 'AuthMiddleware@user');
+    // Admin Route
+    $route->get('/admin', 'AdminController@index', 'AuthMiddleware@admin');
+
+    // User Route
+    $route->get('/user', 'UserController@show', 'AuthMiddleware@user');
 
     return $route;
   }

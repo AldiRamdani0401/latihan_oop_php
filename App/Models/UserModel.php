@@ -6,10 +6,10 @@ class UserModel extends Model {
   protected static $table = 'tb_users';
 
   public function __construct() {
-    parent::__construct(self::$table);
+    parent::setTable(self::$table);
   }
 
-  public function getTable() {
+  public function getTable () {
     return self::$table;
   }
 }

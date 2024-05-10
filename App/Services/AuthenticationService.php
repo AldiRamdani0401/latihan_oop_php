@@ -20,12 +20,12 @@ class AuthenticationService {
       $isManager = new Manager($user);
       $isAdmin = new Admin($user);
       if ($isManager->getStats()) {
-        Session::write($isManager->getUserLevel());
-        return 'managers';
+        Session::write($isManager->getUserLevel(), $isManager->getUserId());
+        return 'manager';
       } else if ($isAdmin->getStats()) {
-        return 'admins';
+        return 'admin';
       }
-      return 'users';
+      return 'user';
     }
   }
 }

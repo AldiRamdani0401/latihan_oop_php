@@ -12,7 +12,7 @@ class Session implements CustomSessionHandler {
     session_destroy();
   }
 
-  public static function write($level) {
+  public static function write($level, $userId) {
     $sessionId = session_create_id();
     $permission = "inAccess,$level";
 
@@ -25,11 +25,10 @@ class Session implements CustomSessionHandler {
     $statement->bind_param('sss', $sessionId, $permission, $expireTime);
     $statement->execute();
     $db->close();
-    $_SESSION['data'] = [$sessionId, $permission];
+    $_SESSION['data'] = [$sessionId, $permission, $userId];
   }
 
   public static function read(){
-    self::open();
     $sessionId = $_SESSION['data'][0];
     $db = new mysqli('localhost', 'root', '', 'db_latihan_oop_php');
     $query = "SELECT * FROM sessions WHERE id = ?";

@@ -18,11 +18,16 @@ class Manager {
     }
   }
 
-  public function getStats() {
-    return $this->stats;
+  public function getUserId() {
+    return $this->userId;
   }
 
   public function getUserLevel () {
     return $this->userLevel;
   }
+
+  public function getStats() {
+    return $this->stats;
+  }
+
 }

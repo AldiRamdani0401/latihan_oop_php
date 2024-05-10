@@ -5,31 +5,46 @@ require 'Schema.php';
 class Model extends Schema {
 
   // Insert One Record
+  // public static function insert(Array $datas) {
+  //   $columns = implode(',', array_keys($datas));
+  //   $values = "'" . implode("','", array_values($datas)) . "'";
+  //   // Check Existing Record
+  //   $checkQuery = "SELECT * FROM " . self::$table . " WHERE " ;
+  //   $columnAndValueArray = array_map(function($column) use ($datas) {
+  //     return "$column = " .  "'" . $datas[$column] . "'";
+  //   }, array_keys($datas));
+  //   $checkQuery .= implode (' AND ', $columnAndValueArray);
+  //   $checkResult = mysqli_query(parent::getConnection(), $checkQuery);
+  //   if (mysqli_num_rows($checkResult) > 0) {
+  //     echo 'Data sudah ada!';
+  //   } else {
+  //     // Create New Record
+  //     $query = "INSERT INTO " . self::$table . " ($columns) VALUES ($values)";
+  //     $result = mysqli_query(parent::getConnection(), $query);
+
+  //     if ($result) {
+  //       echo 'New Data Created..';
+  //     } else {
+  //       die ('Create Data Failed!');
+  //     }
+  //   }
+
+  //   parent::closeConnection();
+  // }
+
   public static function insert(Array $datas) {
     $columns = implode(',', array_keys($datas));
     $values = "'" . implode("','", array_values($datas)) . "'";
-    // Check Existing Record
-    $checkQuery = "SELECT * FROM " . self::$table . " WHERE " ;
-    $columnAndValueArray = array_map(function($column) use ($datas) {
-      return "$column = " .  "'" . $datas[$column] . "'";
-    }, array_keys($datas));
-    $checkQuery .= implode (' AND ', $columnAndValueArray);
-    $checkResult = mysqli_query(parent::getConnection(), $checkQuery);
-    if ($checkResult && mysqli_num_rows($checkResult) > 0) {
-      echo 'Data sudah ada!';
-    } else {
       // Create New Record
       $query = "INSERT INTO " . self::$table . " ($columns) VALUES ($values)";
       $result = mysqli_query(parent::getConnection(), $query);
-
       if ($result) {
         echo 'New Data Created..';
       } else {
         die ('Create Data Failed!');
       }
-    }
-
-    parent::closeConnection();
+      parent::closeConnection();
+      return $result;
   }
 
   // Insert Many Record
@@ -134,13 +149,13 @@ class Model extends Schema {
     $rows = [];
     if (!$result || mysqli_num_rows($result) > 0) {
       while ($row = mysqli_fetch_assoc($result)) {
+        parent::closeConnection();
         return $rows = $row;
       }
     } else {
       echo 'Data tidak ditemukan';
       return $rows;
     }
-    parent::closeConnection();
   }
 
   // Update Data

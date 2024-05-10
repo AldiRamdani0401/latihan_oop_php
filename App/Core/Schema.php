@@ -25,6 +25,7 @@ class Schema extends Database {
             $primaryKey = $columnName;
         }
     }
+
     date_default_timezone_set('Asia/Jakarta');
     $query .= "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP";

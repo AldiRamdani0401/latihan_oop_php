@@ -13,7 +13,7 @@ class Route {
   }
 
   public function post($route, $controller, $middleware = null) {
-      $this->addRoute('POST', $route, $controller, $middleware);
+    $this->addRoute('POST', $route, $controller, $middleware);
   }
 
   protected function addRoute($method, $route, $controller, $middleware = null) {
@@ -25,8 +25,16 @@ class Route {
 
   public function dispatch($url) {
     $method = $_SERVER['REQUEST_METHOD'];
-    if (array_key_exists($url, $this->routes[$method])) {
-        $route = $this->routes[$method][$url];
+    $urlComponents = explode('?', $url);
+    $routePath = $urlComponents[0];
+    if (sizeof($urlComponents) == 2) {
+      $queryString = $urlComponents[1];
+      $queryString = rtrim($queryString, '?');
+      $queryString = explode('=', $queryString);
+      $_POST[$queryString[0]] = $queryString[1];
+    }
+    if (array_key_exists($routePath, $this->routes[$method])) {
+        $route = $this->routes[$method][$routePath];
         if (isset($route['middleware'])) {
             $middlewareParts = explode('@', $route['middleware']);
             $middlewareClass = $middlewareParts[0];
@@ -34,13 +42,13 @@ class Route {
             $middlewareInstance = new $middlewareClass();
             $result = $middlewareInstance->$middlewareMethod();
             if (!$result) {
-                echo 'Anda tidak memiliki izin untuk mengakses halaman ini';
+                header("Location:/"); // nanti diisi dengan halaman Forbidden
                 return;
             }
         }
         $this->callController($route['controller']);
     } else {
-        echo "404 Not Found";
+        header("Location:/");
     }
   }
 

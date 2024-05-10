@@ -17,7 +17,6 @@ class LoginController extends Controller {
     $username = $user->getUsername();
     $password = $user->getPassword();
 
-
     if (empty($username) || empty($password)) {
       echo "Username & Password cannot be empty";
       return;
